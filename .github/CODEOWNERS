@@ -1,0 +1,16 @@
+# По умолчанию — тимлид
+* @PoliaP
+
+# Код
+/src/ @Chaizly @XXIEnD
+/src/parsers/ @XXIEnD
+/src/llm/ @Chaizly
+/src/dialogue/ @Chaizly
+/src/structuring/ @Chaizly
+/src/generator/ @XXIEnD
+/src/anonymizer/ @vlad_username
+/src/ui/ @Chaizly
+/tests/ @vlad_username
+/prompts/ @Chaizly @XXIEnD
+/docs/ @PoliaP
+/n8n/ @Chaizly
