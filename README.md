@@ -1,1 +1,1 @@
-# ai-assistant-tztest
+# ai-assistant-tz
