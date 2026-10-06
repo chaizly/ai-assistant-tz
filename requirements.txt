@@ -1,0 +1,13 @@
+python-dotenv
+pydantic
+fastapi
+uvicorn[standard]
+requests
+streamlit
+pypdf
+python-docx
+docxtpl
+pytest
+pytest-cov
+locust
+ruff
