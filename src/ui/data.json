@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "processName": "Парсинг вакансий",
+    "description": "Собираем вакансии с hh.ru по ключевым словам и генерируем ТЗ на автоматизацию отклика.",
+    "targetUrl": "https://hh.ru",
+    "fields": ["title", "company", "salary"],
+    "priority": "high",
+    "createdAt": "17-10-2026 | 14:34:42"
+  }
+]
