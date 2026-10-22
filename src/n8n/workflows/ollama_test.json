@@ -1,0 +1,117 @@
+{
+  "name": "ollama_test",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "af807b6d-fcd4-4fde-b40a-63c42d30454f",
+      "name": "When chat message received",
+      "webhookId": "351badbd-8e88-4431-b407-33a5f349e1ff"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a helpful assistant. Please always respond in Russian, regardless of the input language."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6734c8ec-37c2-40ef-b615-c31b86ce9b02",
+      "name": "AI Agent",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        304,
+        224
+      ],
+      "id": "0bf1d441-511f-450b-9044-0e3e8e29fc58",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:7b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        112,
+        224
+      ],
+      "id": "6dd4d80f-2af2-4af8-bfe9-235561e2e342",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "2Qk8auaNC9nzcYSv",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c915a2cd-1a5b-4048-82f6-008f87512212",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "faf2abc96761f0d6798d417790d878839425da2e40da5d8855e089f3d604a306"
+  },
+  "nodeGroups": [],
+  "id": "KT6dQVMfd4M8jXR7",
+  "tags": []
+}
