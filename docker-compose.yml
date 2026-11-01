@@ -13,8 +13,7 @@ services:
       - N8N_BASIC_AUTH_ACTIVE=false
     depends_on:
       - ollama
-      # для питон сервиса
-      # - python-parser
+      - python-parser
     restart: unless-stopped
 
   ollama:
@@ -24,6 +23,15 @@ services:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  python-parser:
+    build: ./src/python
+    container_name: tz_python
+    ports:
+      - "5000:5000"
+    volumes: 
+      - ./src/python:/app
     restart: unless-stopped
 
 volumes:

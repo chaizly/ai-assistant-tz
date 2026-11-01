@@ -1,0 +1,266 @@
+{
+  "name": "ollama_test",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true,
+          "allowedFilesMimeTypes": "*application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -576,
+        32
+      ],
+      "id": "af807b6d-fcd4-4fde-b40a-63c42d30454f",
+      "name": "When chat message received",
+      "webhookId": "351badbd-8e88-4431-b407-33a5f349e1ff"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.final_prompt || $json.chatInput }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant. Please always respond only in Russian, regardless of the input language."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        512,
+        -16
+      ],
+      "id": "6734c8ec-37c2-40ef-b615-c31b86ce9b02",
+      "name": "AI Agent",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5:7b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        432,
+        240
+      ],
+      "id": "6dd4d80f-2af2-4af8-bfe9-235561e2e342",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "2Qk8auaNC9nzcYSv",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://python-parser:5000/parse/docx",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "={{ $json.files[0].binaryKey }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        128,
+        -128
+      ],
+      "id": "caa1c992-f3ab-4c25-ad59-2f43165647cd",
+      "name": "HTTP Request",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "caa50891-7969-40aa-b524-2ce9dea68471",
+              "leftValue": "={{ $json.needsParsing }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -32,
+        48
+      ],
+      "id": "418eb38f-5275-4988-aea2-4775a24a29d0",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Получаем сохранённый текст из первого Code-узла\n// ВАЖНО: замени 'Prepare Input' на реальное имя твоего первого Code-узла!\nconst savedChatText = $('check').first().json.originalChatText || \"\";\n\n// Получаем текст из документа (ответ парсера)\nconst docText = $json.raw_text || \"\";\n\n// Склеиваем\nlet finalPrompt = \"\";\nif (docText) {\n    finalPrompt = `Содержимое документа:\\n${docText}\\n\\n`;\n}\nif (savedChatText) {\n    finalPrompt += `Комментарий пользователя: ${savedChatText}`;\n}\n\nreturn {\n    json: {\n        final_prompt: finalPrompt,\n        raw_text: docText,\n        chat_input: savedChatText\n    }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        -128
+      ],
+      "id": "067eebfc-906d-4c81-a939-d1bbbe9751d0",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Code node: \"Prepare Input\"\nconst chatText = $json.chatInput || \"\";\nconst hasFile = $json.files && $json.files.length > 0;\n\nif (hasFile) {\n  // Если есть файл, возвращаем данные для парсера + сохраняем текст чата\n  return [{\n    json: {\n      ...$json,\n      originalChatText: chatText, // сохраняем текст пользователя\n      needsParsing: true\n    },\n    binary: $input.item.binary // обязательно пробрасываем файл дальше [citation:6]\n  }];\n} else {\n  // Если файла нет, сразу возвращаем текст для агента\n  return [{\n    json: {\n      ...$json,\n      raw_text: chatText,\n      needsParsing: false\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -272,
+        48
+      ],
+      "id": "7691a40c-ad55-44e3-8d1f-9ac4e5e94dc6",
+      "name": "check"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        576,
+        240
+      ],
+      "id": "cd2af98c-fd08-44e8-9e7a-7a867a481846",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "check": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "911b816b-5cb3-43e2-b1ac-95924d78e77d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "faf2abc96761f0d6798d417790d878839425da2e40da5d8855e089f3d604a306"
+  },
+  "nodeGroups": [],
+  "id": "KT6dQVMfd4M8jXR7",
+  "tags": []
+}
