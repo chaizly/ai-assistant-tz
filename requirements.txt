@@ -13,3 +13,4 @@ pytest-cov
 locust
 ruff
 httpx
+PyMuPDF

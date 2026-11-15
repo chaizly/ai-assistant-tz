@@ -1,5 +1,5 @@
 {
-  "name": "ollama_test",
+  "name": "ollama_test_parser",
   "nodes": [
     {
       "parameters": {
@@ -59,7 +59,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://python-parser:5000/parse/docx",
+        "url": "http://python-parser:5000/parse",
         "sendBody": true,
         "contentType": "multipart-form-data",
         "bodyParameters": {
@@ -144,17 +144,15 @@
     },
     {
       "parameters": {
-        "sessionIdType": "customKey",
-        "sessionKey": "={{ $('When chat message received').item.json.sessionId }}",
         "contextWindowLength": 20
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        576,
+        592,
         240
       ],
-      "id": "cd2af98c-fd08-44e8-9e7a-7a867a481846",
+      "id": "872a7763-1e67-4e35-9fbd-1c73f55639c5",
       "name": "Simple Memory"
     }
   ],
@@ -255,7 +253,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "911b816b-5cb3-43e2-b1ac-95924d78e77d",
+  "versionId": "5af0b6ba-4028-425e-a62c-bc2b9aadc4c5",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "faf2abc96761f0d6798d417790d878839425da2e40da5d8855e089f3d604a306"
