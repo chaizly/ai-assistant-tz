@@ -7,7 +7,7 @@ import {
 import { tzSchema, type TzFormValues } from '../schemas'
 import type { Tz, TzInput } from '../types'
 
-const FIELD_OPTIONS = ['title', 'company', 'salary', 'description', 'link']
+const FIELD_OPTIONS = ['Оборудование', 'Сырье', 'Шаги процесса', 'Требования к безопасности', 'Чертежи и схемы']
 const PRIORITY_OPTIONS = [
   { value: 'low', label: 'Низкий' },
   { value: 'medium', label: 'Средний' },
@@ -44,15 +44,15 @@ export function TzForm({ initial, loading, title = 'Данные заявки', 
       <form onSubmit={handleSubmit(data => onSubmit(data))}>
         <Stack>
           <TextInput
-            label="Название процесса"
-            placeholder="Парсинг вакансий"
+            label="Название производственного процесса"
+            placeholder="Автоматизация"
             error={errors.processName?.message}
             {...register('processName')}
           />
           <Textarea
-            label="Описание"
+            label="Суть задачи / Описание"
             minRows={4}
-            placeholder="Что автоматизируем и зачем"
+            placeholder="Опишите, что нужно сделать и какие данные есть"
             error={errors.description?.message}
             {...register('description')}
           />
