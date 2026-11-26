@@ -7,11 +7,11 @@ export function Home() {
     <Stack align="center" mt={80} gap="lg">
       <Title order={1}>AI Assistant TZ</Title>
       <Text c="dimmed" size="lg" ta="center" maw={600}>
-        Панель управления генератором технических заданий.
-        Создавайте заявки, управляйте ими и готовьте данные для ИИ.
+        Многомодульный ИИ-ассистент для подготовки технических заданий. 
+        Загружайте данные, общайтесь с ИИ и получайте готовые ТЗ.
       </Text>
       <Button size="lg" onClick={() => navigate('/create')}>
-        Создать заявку
+        Создать ТЗ
       </Button>
     </Stack>
   )
