@@ -53,13 +53,13 @@ export function Archive() {
 
   return (
     <>
-      <Title order={2} mb="md">Архив заявок</Title>
+      <Title order={2} mb="md">Архив технических заданий</Title>
 
       <Table striped highlightOnHover>
         <Table.Thead>
           <Table.Tr>
             <Table.Th>ID</Table.Th>
-            <Table.Th>Название</Table.Th>
+            <Table.Th>Процесс</Table.Th>
             <Table.Th>URL</Table.Th>
             <Table.Th>Приоритет</Table.Th>
             <Table.Th>Дата</Table.Th>
