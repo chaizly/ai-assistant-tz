@@ -6,9 +6,11 @@ requests
 streamlit
 pypdf
 python-docx
+python-multipart
 docxtpl
 pytest
 pytest-cov
 locust
 ruff
 httpx
+PyMuPDF

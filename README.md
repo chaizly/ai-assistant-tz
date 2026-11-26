@@ -3,15 +3,15 @@
 Многомодульный ИИ-ассистент для подготовки технических заданий на основе диалогового анализа производственных процессов.
 
 ## Команда
-- **Chaizly** — backend + AI + N8N
+- **Chaizly** — frontend + AI + N8N
 - **XXIEnD** — backend + парсинг + генератор ТЗ
 - **PoliaP** — тимлид, ТЗ, документация
-- **Влад** — тесты, словарь анонимизации
+- **Vladuu3** — тесты
 
 ## Стек
 - Python 3.11
 - N8N
-- Ollama / YandexGPT / GigaChat
+- Ollama / YandexGPT / GigaChat - возможны и другие модели
 - Streamlit (UI)
 - Docker
 
